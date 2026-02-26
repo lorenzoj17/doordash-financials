@@ -1,1 +1,665 @@
-file:///Users/.../Doordash Financials🚗/doordash-financials.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DoorDash Financials</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --red: #ff2d2d;
+      --dark: #111111;
+      --light: #f5f5f5;
+      --card: #ffffff;
+      --accent: #ff5a5f;
+    }
+    * { box-sizing: border-box; font-family: -apple-system, system-ui, sans-serif; }
+    body {
+      margin: 0;
+      background: #111111;
+      color: #ffffff;
+    }
+    header {
+      background: var(--dark);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #222;
+    }
+    .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+    }
+    .title-block {
+      display: flex;
+      flex-direction: column;
+    }
+    .title-block h1 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .title-block span {
+      font-size: 12px;
+      color: #bbbbbb;
+    }
+    main {
+      padding: 12px;
+      max-width: 900px;
+      margin: 0 auto 60px auto;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px 6px;
+      border-radius: 999px;
+      border: 1px solid #333;
+      font-size: 13px;
+      cursor: pointer;
+      background: #1a1a1a;
+      color: #cccccc;
+    }
+    .tab.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid #262626;
+    }
+    .card-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #aaaaaa;
+      margin-bottom: 4px;
+    }
+    .card-value {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .card-sub {
+      font-size: 11px;
+      color: #888888;
+      margin-top: 2px;
+    }
+    h2 {
+      font-size: 15px;
+      margin: 12px 0 6px 0;
+    }
+    form {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid #262626;
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 2px;
+      color: #dddddd;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #111;
+      color: #fff;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 40px;
+    }
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--red);
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #333;
+      color: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    th, td {
+      padding: 6px 4px;
+      border-bottom: 1px solid #222;
+      text-align: left;
+    }
+    th {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #aaaaaa;
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #222;
+      color: #ccc;
+    }
+    .footer-note {
+      font-size: 11px;
+      color: #777;
+      margin-top: 8px;
+    }
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #000;
+      border-top: 1px solid #222;
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #aaa;
+    }
+    .bottom-bar span strong {
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      header { padding: 12px; }
+      main { padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="icon">$</div>
+    <div class="title-block">
+      <h1>DoorDash Financials</h1>
+      <span>This Week • USD • Local Only (no account)</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="tabs">
+      <div class="tab active" data-target="dashboard">Dashboard</div>
+      <div class="tab" data-target="runs">Daily Runs</div>
+      <div class="tab" data-target="expenses">Expenses</div>
+      <div class="tab" data-target="reports">Reports</div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section active">
+      <h2>This Week Overview</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-label">Earnings</div>
+          <div class="card-value" id="dash-earnings">$0.00</div>
+          <div class="card-sub">Base + Tips + Bonuses</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Gas</div>
+          <div class="card-value" id="dash-gas">$0.00</div>
+          <div class="card-sub">Fuel expenses</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Maintenance</div>
+          <div class="card-value" id="dash-maint">$0.00</div>
+          <div class="card-sub">Car costs</div>
+        </div>
+        <div class="card">
+          <div class="card-label">True Profit</div>
+          <div class="card-value" id="dash-profit">$0.00</div>
+          <div class="card-sub">Earnings − Gas − Maintenance</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Profit / Hour</div>
+          <div class="card-value" id="dash-profit-hour">$0.00</div>
+          <div class="card-sub">After expenses</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Cost / Mile</div>
+          <div class="card-value" id="dash-cost-mile">$0.00</div>
+          <div class="card-sub">Gas + Maint per mile</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Miles Driven</div>
+          <div class="card-value" id="dash-miles">0.0</div>
+          <div class="card-sub">This week</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Hours Worked</div>
+          <div class="card-value" id="dash-hours">0.0</div>
+          <div class="card-sub">This week</div>
+        </div>
+      </div>
+      <div class="footer-note">
+        Data is stored locally in this browser only. Clearing site data will reset everything.
+      </div>
+    </section>
+
+    <!-- DAILY RUNS -->
+    <section id="runs" class="section">
+      <h2>Daily Runs</h2>
+      <form id="run-form">
+        <label>Date</label>
+        <input type="date" id="run-date" required />
+
+        <label>Base Pay (USD)</label>
+        <input type="number" step="0.01" id="run-base" required />
+
+        <label>Tips (USD)</label>
+        <input type="number" step="0.01" id="run-tips" required />
+
+        <label>Bonuses (USD)</label>
+        <input type="number" step="0.01" id="run-bonus" value="0" />
+
+        <label>Miles Driven</label>
+        <input type="number" step="0.1" id="run-miles" required />
+
+        <label>Hours Worked</label>
+        <input type="number" step="0.1" id="run-hours" required />
+
+        <label>Notes</label>
+        <textarea id="run-notes" placeholder="Dinner rush, stacked orders, etc."></textarea>
+
+        <button type="submit" class="btn-primary">Add Run</button>
+      </form>
+
+      <table id="runs-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Earnings</th>
+            <th>Miles</th>
+            <th>Hours</th>
+            <th>$/hr</th>
+            <th>$/mi</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- EXPENSES -->
+    <section id="expenses" class="section">
+      <h2>Expenses</h2>
+      <form id="expense-form">
+        <label>Date</label>
+        <input type="date" id="exp-date" required />
+
+        <label>Type</label>
+        <select id="exp-type">
+          <option value="gas">Gas</option>
+          <option value="maintenance">Maintenance</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label>Amount (USD)</label>
+        <input type="number" step="0.01" id="exp-amount" required />
+
+        <label>Notes</label>
+        <textarea id="exp-notes" placeholder="Oil change, tires, car wash, etc."></textarea>
+
+        <button type="submit" class="btn-primary">Add Expense</button>
+      </form>
+
+      <table id="expenses-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- REPORTS -->
+    <section id="reports" class="section">
+      <h2>Reports</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-label">Best Day (Profit)</div>
+          <div class="card-value" id="rep-best-day">$0.00</div>
+          <div class="card-sub" id="rep-best-day-label">—</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Worst Day (Profit)</div>
+          <div class="card-value" id="rep-worst-day">$0.00</div>
+          <div class="card-sub" id="rep-worst-day-label">—</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Avg Profit / Hour</div>
+          <div class="card-value" id="rep-avg-profit-hour">$0.00</div>
+          <div class="card-sub">Across all runs</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Avg Cost / Mile</div>
+          <div class="card-value" id="rep-avg-cost-mile">$0.00</div>
+          <div class="card-sub">Gas + Maint per mile</div>
+        </div>
+      </div>
+      <div class="footer-note">
+        Reports use all stored data, not just this week.
+      </div>
+    </section>
+  </main>
+
+  <div class="bottom-bar">
+    <span>Mode: <strong>Offline • Local Only</strong></span>
+    <button class="btn-secondary" id="reset-data">Reset All Data</button>
+  </div>
+
+  <script>
+    // --- Storage Keys ---
+    const KEY_RUNS = 'dd_fin_runs_v1';
+    const KEY_EXPENSES = 'dd_fin_expenses_v1';
+
+    let runs = [];
+    let expenses = [];
+
+    function loadData() {
+      runs = JSON.parse(localStorage.getItem(KEY_RUNS) || '[]');
+      expenses = JSON.parse(localStorage.getItem(KEY_EXPENSES) || '[]');
+    }
+
+    function saveData() {
+      localStorage.setItem(KEY_RUNS, JSON.stringify(runs));
+      localStorage.setItem(KEY_EXPENSES, JSON.stringify(expenses));
+    }
+
+    function formatMoney(v) {
+      if (!isFinite(v)) return '$0.00';
+      return '$' + v.toFixed(2);
+    }
+
+    function formatNumber(v, d = 1) {
+      if (!isFinite(v)) return '0.0';
+      return v.toFixed(d);
+    }
+
+    function getWeekStart(date) {
+      // Monday week start
+      const d = new Date(date);
+      const day = d.getDay(); // 0=Sun,1=Mon...
+      const diff = (day === 0 ? -6 : 1 - day);
+      d.setDate(d.getDate() + diff);
+      d.setHours(0,0,0,0);
+      return d;
+    }
+
+    function isSameWeek(d1, d2) {
+      const w1 = getWeekStart(d1);
+      const w2 = getWeekStart(d2);
+      return w1.getTime() === w2.getTime();
+    }
+
+    function renderRunsTable() {
+      const tbody = document.querySelector('#runs-table tbody');
+      tbody.innerHTML = '';
+      runs
+        .slice()
+        .sort((a,b) => new Date(a.date) - new Date(b.date))
+        .forEach(run => {
+          const tr = document.createElement('tr');
+          const earnings = run.base + run.tips + run.bonus;
+          const perHour = run.hours > 0 ? earnings / run.hours : 0;
+          const perMile = run.miles > 0 ? earnings / run.miles : 0;
+          tr.innerHTML = `
+            <td>${run.date}</td>
+            <td>${formatMoney(earnings)}</td>
+            <td>${formatNumber(run.miles)}</td>
+            <td>${formatNumber(run.hours)}</td>
+            <td>${formatMoney(perHour)}</td>
+            <td>${formatMoney(perMile)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+    }
+
+    function renderExpensesTable() {
+      const tbody = document.querySelector('#expenses-table tbody');
+      tbody.innerHTML = '';
+      expenses
+        .slice()
+        .sort((a,b) => new Date(a.date) - new Date(b.date))
+        .forEach(exp => {
+          const typeLabel =
+            exp.type === 'gas' ? 'Gas' :
+            exp.type === 'maintenance' ? 'Maintenance' :
+            'Other';
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${exp.date}</td>
+            <td><span class="pill">${typeLabel}</span></td>
+            <td>${formatMoney(exp.amount)}</td>
+            <td>${exp.notes || ''}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+    }
+
+    function computeDashboard() {
+      const now = new Date();
+      let earnings = 0;
+      let miles = 0;
+      let hours = 0;
+      let gas = 0;
+      let maint = 0;
+
+      runs.forEach(r => {
+        if (isSameWeek(new Date(r.date), now)) {
+          const e = r.base + r.tips + r.bonus;
+          earnings += e;
+          miles += r.miles;
+          hours += r.hours;
+        }
+      });
+
+      expenses.forEach(e => {
+        if (isSameWeek(new Date(e.date), now)) {
+          if (e.type === 'gas') gas += e.amount;
+          else if (e.type === 'maintenance') maint += e.amount;
+        }
+      });
+
+      const profit = earnings - gas - maint;
+      const profitPerHour = hours > 0 ? profit / hours : 0;
+      const costPerMile = miles > 0 ? (gas + maint) / miles : 0;
+
+      document.getElementById('dash-earnings').textContent = formatMoney(earnings);
+      document.getElementById('dash-gas').textContent = formatMoney(gas);
+      document.getElementById('dash-maint').textContent = formatMoney(maint);
+      document.getElementById('dash-profit').textContent = formatMoney(profit);
+      document.getElementById('dash-profit-hour').textContent = formatMoney(profitPerHour);
+      document.getElementById('dash-cost-mile').textContent = formatMoney(costPerMile);
+      document.getElementById('dash-miles').textContent = formatNumber(miles, 1);
+      document.getElementById('dash-hours').textContent = formatNumber(hours, 1);
+    }
+
+    function computeReports() {
+      if (runs.length === 0) {
+        document.getElementById('rep-best-day').textContent = '$0.00';
+        document.getElementById('rep-best-day-label').textContent = '—';
+        document.getElementById('rep-worst-day').textContent = '$0.00';
+        document.getElementById('rep-worst-day-label').textContent = '—';
+        document.getElementById('rep-avg-profit-hour').textContent = '$0.00';
+        document.getElementById('rep-avg-cost-mile').textContent = '$0.00';
+        return;
+      }
+
+      // Aggregate by date
+      const byDate = {};
+      runs.forEach(r => {
+        const key = r.date;
+        const earnings = r.base + r.tips + r.bonus;
+        if (!byDate[key]) {
+          byDate[key] = { earnings: 0, miles: 0, hours: 0 };
+        }
+        byDate[key].earnings += earnings;
+        byDate[key].miles += r.miles;
+        byDate[key].hours += r.hours;
+      });
+
+      // Attach expenses per date (approximate: same-day gas/maint)
+      expenses.forEach(e => {
+        const key = e.date;
+        if (!byDate[key]) {
+          byDate[key] = { earnings: 0, miles: 0, hours: 0 };
+        }
+        if (!byDate[key].expenses) byDate[key].expenses = 0;
+        if (e.type === 'gas' || e.type === 'maintenance') {
+          byDate[key].expenses += e.amount;
+        }
+      });
+
+      let bestProfit = -Infinity;
+      let bestDate = null;
+      let worstProfit = Infinity;
+      let worstDate = null;
+
+      let totalProfit = 0;
+      let totalHours = 0;
+      let totalCost = 0;
+      let totalMiles = 0;
+
+      Object.keys(byDate).forEach(date => {
+        const d = byDate[date];
+        const expenses = d.expenses || 0;
+        const profit = d.earnings - expenses;
+
+        if (profit > bestProfit) {
+          bestProfit = profit;
+          bestDate = date;
+        }
+        if (profit < worstProfit) {
+          worstProfit = profit;
+          worstDate = date;
+        }
+
+        totalProfit += profit;
+        totalHours += d.hours;
+        totalMiles += d.miles;
+        totalCost += expenses;
+      });
+
+      const avgProfitHour = totalHours > 0 ? totalProfit / totalHours : 0;
+      const avgCostMile = totalMiles > 0 ? totalCost / totalMiles : 0;
+
+      document.getElementById('rep-best-day').textContent = formatMoney(bestProfit === -Infinity ? 0 : bestProfit);
+      document.getElementById('rep-best-day-label').textContent = bestDate || '—';
+      document.getElementById('rep-worst-day').textContent = formatMoney(worstProfit === Infinity ? 0 : worstProfit);
+      document.getElementById('rep-worst-day-label').textContent = worstDate || '—';
+      document.getElementById('rep-avg-profit-hour').textContent = formatMoney(avgProfitHour);
+      document.getElementById('rep-avg-cost-mile').textContent = formatMoney(avgCostMile);
+    }
+
+    function refreshAll() {
+      renderRunsTable();
+      renderExpensesTable();
+      computeDashboard();
+      computeReports();
+    }
+
+    // --- Event wiring ---
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      refreshAll();
+
+      // Tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.target).classList.add('active');
+        });
+      });
+
+      // Run form
+      document.getElementById('run-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const date = document.getElementById('run-date').value;
+        const base = parseFloat(document.getElementById('run-base').value || '0');
+        const tips = parseFloat(document.getElementById('run-tips').value || '0');
+        const bonus = parseFloat(document.getElementById('run-bonus').value || '0');
+        const miles = parseFloat(document.getElementById('run-miles').value || '0');
+        const hours = parseFloat(document.getElementById('run-hours').value || '0');
+        const notes = document.getElementById('run-notes').value.trim();
+
+        if (!date) return;
+
+        runs.push({ date, base, tips, bonus, miles, hours, notes });
+        saveData();
+        refreshAll();
+        e.target.reset();
+      });
+
+      // Expense form
+      document.getElementById('expense-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const date = document.getElementById('exp-date').value;
+        const type = document.getElementById('exp-type').value;
+        const amount = parseFloat(document.getElementById('exp-amount').value || '0');
+        const notes = document.getElementById('exp-notes').value.trim();
+
+        if (!date) return;
+
+        expenses.push({ date, type, amount, notes });
+        saveData();
+        refreshAll();
+        e.target.reset();
+      });
+
+      // Reset data
+      document.getElementById('reset-data').addEventListener('click', () => {
+        if (!confirm('Reset all runs and expenses? This cannot be undone.')) return;
+        runs = [];
+        expenses = [];
+        saveData();
+        refreshAll();
+      });
+    });
+  </script>
+</body>
+</html>
